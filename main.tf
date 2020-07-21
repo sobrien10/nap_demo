@@ -68,4 +68,7 @@ resource "aws_security_group" "f5" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  tags = {
+    Name = "ob1-SecurityGroup1"
+  }
 }
