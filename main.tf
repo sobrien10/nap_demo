@@ -128,6 +128,6 @@ resource "aws_instance" "big-ip" {
   }
 
   tags = {
-    Name = "ob1-mybigip"
+    Name = "ob1-mybigip1"
   }
 }
