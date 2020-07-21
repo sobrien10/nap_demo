@@ -22,6 +22,7 @@ module "vpc" {
   }
 }
 
+#Configure the security Group
 resource "aws_security_group" "f5" {
   name   = "${var.prefix}-f5"
   vpc_id = module.vpc.vpc_id
