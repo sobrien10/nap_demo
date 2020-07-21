@@ -72,3 +72,13 @@ resource "aws_security_group" "f5" {
     Name = "ob1-SecurityGroup1"
   }
 }
+
+#Create the BIG-IP
+resource "aws_instance" "big-ip" {
+  ami           = "ami-0fe284d68b7936ab6"
+  instance_type = "t2.medium"
+
+  tags = {
+    Name = "HelloWorld"
+  }
+}
