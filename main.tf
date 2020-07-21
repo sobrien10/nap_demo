@@ -73,14 +73,25 @@ resource "aws_security_group" "f5" {
   }
 }
 
+resource "aws_network_interface" "mgmt" {
+  subnet_id   = module.vpc.public_subnets[0].id
+  private_ips = ["10.0.1.100"]
+
+  tags = {
+    Name = "mgmt_network_interface"
+  }
+}
+
 #Create the BIG-IP
 resource "aws_instance" "big-ip" {
   ami           = "ami-0fe284d68b7936ab6"
   instance_type = "m5.xlarge"
 
-  tags = {
-    Name = "HelloWorld"
+    network_interface {
+    network_interface_id = "${aws_network_interface.mgmt.id}"
+    device_index         = 0
   }
+
   tags = {
     Name = "ob1-mybigip"
   }
