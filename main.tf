@@ -66,6 +66,6 @@ resource "aws_security_group" "f5" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["90.208.9.18/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
