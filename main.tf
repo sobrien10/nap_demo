@@ -76,27 +76,46 @@ resource "aws_security_group" "f5" {
 resource "aws_network_interface" "mgmt" {
   subnet_id   = module.vpc.public_subnets[0]
   private_ips = ["10.0.1.10"]
-  security.groups = [aws_security_group.ob1-f5.id]
+  security_groups = [ aws_security_group.f5.id ]
 
   tags = {
-    Name = "mgmt_network_interface"
+    Name = "mgmt_interface"
   }
+}
+
+resource "aws_eip" "mgmt" {
+  vpc                       = true
+  network_interface         = aws_network_interface.mgmt.id
+  associate_with_private_ip = "10.0.1.10"
 }
 
 resource "aws_network_interface" "public" {
   subnet_id   = module.vpc.public_subnets[1]
-  private_ips = ["10.0.2.10"]
-  security.groups = [aws_security_group.ob1-f5.id]
+  private_ips = ["10.0.2.10", "10.0.2.11"]
+  security_groups = [ aws_security_group.f5.id ]
 
   tags = {
-    Name = "public_network_interface"
+    Name = "public_interface"
   }
+}
+
+resource "aws_eip" "public1" {
+  vpc                       = true
+  network_interface         = aws_network_interface.public.id
+  associate_with_private_ip = "10.0.2.10"
+}
+
+resource "aws_eip" "public2" {
+  vpc                       = true
+  network_interface         = aws_network_interface.public.id
+  associate_with_private_ip = "10.0.2.11"
 }
 
 #Create the BIG-IP
 resource "aws_instance" "big-ip" {
   ami           = "ami-0fe284d68b7936ab6"
   instance_type = "m5.xlarge"
+  key_name      = "OB1-key-sews"
 
     network_interface {
     network_interface_id = aws_network_interface.mgmt.id
@@ -105,7 +124,7 @@ resource "aws_instance" "big-ip" {
 
   network_interface {
     network_interface_id = aws_network_interface.public.id
-    device_index         = 0
+    device_index         = 1
   }
 
   tags = {
