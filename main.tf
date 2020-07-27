@@ -123,11 +123,13 @@ data "aws_ami" "f5_ami" {
     }
   }
 
+#Create a random Password
   resource "random_string" "password" {
     length  = 10
     special = false
   }
 
+#Data for the user-data.tmpl file
   data "template_file" "f5_init" {
       template = file("user-data.tmpl")
       vars = {
