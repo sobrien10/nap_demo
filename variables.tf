@@ -24,3 +24,4 @@ variable onboard_log {
   type        = string
   default     = "/var/log/startup-script.log"
   }
+  
