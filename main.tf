@@ -113,11 +113,44 @@ resource "aws_eip" "public2" {
   associate_with_private_ip = "10.0.2.11"
 }
 
+#Find the ami variable
+data "aws_ami" "f5_ami" {
+  most_recent = true
+  owners      = ["679593333241"]
+  filter {    
+  name   = "name"
+  values = [var.f5_ami_search_name]
+    }
+  }
+
+  resource "random_string" "password" {
+    length  = 10
+    special = false
+  }
+
+  data "template_file" "f5_init" {
+      template = file("user-data.tmpl")
+      vars = {
+      password              = random_string.password.result
+      doVersion             = "latest"
+      #example version:    
+      #as3Version           = "3.16.0"
+      as3Version            = "latest"
+      tsVersion             = "latest"
+      cfVersion             = "latest"
+      fastVersion           = "latest"
+      libs_dir              = var.libs_dir
+      onboard_log           = var.onboard_log
+      projectPrefix         = var.prefix
+    }
+  }
+
 #Create the BIG-IP
 resource "aws_instance" "big-ip" {
-  ami           = "ami-0fe284d68b7936ab6"
+  ami           = data.aws_ami.f5_ami.id
   instance_type = "m5.xlarge"
   key_name      = "OB1-key-sews"
+  user_data     = data.template_file.f5_init.rendered
 
     network_interface {
     network_interface_id = aws_network_interface.mgmt.id
