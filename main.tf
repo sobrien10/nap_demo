@@ -168,3 +168,11 @@ resource "aws_instance" "big-ip" {
     Name = "ob1-mybigip"
   }
 }
+
+output "f5_password" {
+  value = random_string.password.result
+}
+
+output "f5_tmui" {
+  value = "https://${aws_eip.mgmt.public_ip}"
+}
