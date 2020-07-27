@@ -24,8 +24,3 @@ variable onboard_log {
   type        = string
   default     = "/var/log/startup-script.log"
   }
-
-  variable "ssh_key_name" {
-  description = "prefix for resources created"
-  default     = "OB1-key-sews"
-}
