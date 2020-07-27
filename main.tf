@@ -151,7 +151,7 @@ data "aws_ami" "f5_ami" {
 resource "aws_instance" "big-ip" {
   ami           = data.aws_ami.f5_ami.id
   instance_type = "m5.xlarge"
-  key_name      = "OB1-key-sews"
+  key_name      = var.ssh_key_name
   user_data     = data.template_file.f5_init.rendered
 
     network_interface {
