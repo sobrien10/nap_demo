@@ -3,6 +3,11 @@ variable "prefix" {
   default     = "ob1"
 }
 
+variable "username" {
+  description = "prefix for resources created"
+  default     = "admin"
+}
+
 variable "ssh_key_name" {
   description = "prefix for resources created"
   default     = "OB1-key-sews"

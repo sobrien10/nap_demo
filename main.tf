@@ -15,7 +15,7 @@ module "vpc" {
   azs             = ["eu-west-2a"]
   public_subnets  = ["10.0.1.0/24", "10.0.2.0/24"]
 
-  enable_nat_gateway = false
+  enable_nat_gateway = true
 
   tags = {
     Environment = "ob1-vpc-teraform"
@@ -164,6 +164,10 @@ resource "aws_instance" "big-ip" {
     device_index         = 1
   }
 
+   provisioner "local-exec" {
+    command = "while [[ \"$(curl -skiu ${var.username}:${random_string.password.result} https://${self.public_ip}/mgmt/shared/appsvcs/declare | grep -Eoh \"^HTTP/1.1 204\")\" != \"HTTP/1.1 204\" ]]; do sleep 5; done"
+  }
+
   tags = {
     Name = "ob1-mybigip"
   }
@@ -175,4 +179,20 @@ output "f5_password" {
 
 output "f5_tmui" {
   value = "https://${aws_eip.mgmt.public_ip}"
+}
+
+output "f5_user" {
+  value = var.username
+}
+
+output "f5_pub_ip" {
+  value = aws_eip.public1.private_ip
+}
+
+data "aws_subnet" "f5_pub_data" {
+  id = module.vpc.public_subnets[1]
+}
+
+output "f5_pub_cidr" {
+  value = data.aws_subnet.f5_pub_data.cidr_block
 }
