@@ -18,7 +18,7 @@ module "vpc" {
   enable_nat_gateway = true
 
   tags = {
-    Environment = "ob2-vpc-teraform"
+    Environment = "ob1-vpc-teraform"
   }
 }
 
