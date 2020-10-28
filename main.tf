@@ -67,7 +67,8 @@ resource "aws_security_group" "f5" {
 }
 
 data "template_file" "user_data" {
-  template = "user-data.tpl"
+  template = "${file("${path.module}/userdata.tmpl")}"
+
 }
 
 resource "aws_instance" "OB1-JuiceShop" {
