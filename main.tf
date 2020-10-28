@@ -1,6 +1,6 @@
 #Configure the AWS provider
 provider "aws" {
-  version = "~> 2.0"  
+  version = "~> 2.2"  
   region  = "eu-west-2"
 }
 
