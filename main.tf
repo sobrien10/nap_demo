@@ -87,7 +87,7 @@ data "template_file" "user_data" {
 resource "aws_instance" "OB1-JuiceShop" {
   ami = "ami-0765d48d7e15beb93"
   instance_type = "t2.micro"
-  subnet_id   = module.vpc.public_subnets
+  subnet_id   = module.vpc.public_subnets[0]
   private_ip = "10.0.1.10"
   user_data = "${data.template_file.user_data.rendered}"
   security_groups = [ aws_security_group.f5.id ]
