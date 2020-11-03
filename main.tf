@@ -2,6 +2,8 @@
 provider "aws" {
   version = "~> 2.2"  
   region  = "eu-west-2"
+  shared_credentials_file = "/Users/stobrien/.aws/creds"
+  profile = "default"
 }
 
 #Configure the VPC and Public Subnets
@@ -31,27 +33,27 @@ resource "aws_security_group" "f5" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["94.7.231.241/32"]
+    cidr_blocks = ["176.252.120.249/32"]
   }
 
     ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["94.7.231.241/32"]
+    cidr_blocks = ["176.252.120.249/32"]
   }
 
     ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["94.7.231.241/32"]
+    cidr_blocks = ["176.252.120.249/32"]
   }
 
   ingress {
     from_port   = 0
     to_port     = 0
-    protocol    = "tcp"
+    protocol    = "-1"
     cidr_blocks = ["10.0.1.0/24"]
   }
 
@@ -66,7 +68,7 @@ resource "aws_security_group" "f5" {
   }
 }
 
-data "template_file" "user_data" {
+data "template_file" "user_data1" {
   template = "${file("${path.module}/userdata.tmpl")}"
 
 }
@@ -77,6 +79,27 @@ resource "aws_instance" "OB1-JuiceShop" {
   subnet_id   = module.vpc.public_subnets[0]
   private_ip = "10.0.1.10"
   key_name   = "${var.ssh_key_name}"
-  user_data = "${data.template_file.user_data.rendered}"
+  user_data = "${data.template_file.user_data1.rendered}"
   security_groups = [ aws_security_group.f5.id ]
+    tags = {
+    Name = "OB1-JuiceShop"
+  }
+}
+
+data "template_file" "user_data2" {
+  template = "${file("${path.module}/userdata-nap.tmpl")}"
+
+}
+
+resource "aws_instance" "OB1-NAP" {
+  ami = "ami-09e5afc68eed60ef4"
+  instance_type = "t2.medium"
+  subnet_id   = module.vpc.public_subnets[0]
+  private_ip = "10.0.1.11"
+  key_name   = "${var.ssh_key_name}"
+  user_data = "${data.template_file.user_data2.rendered}"
+  security_groups = [ aws_security_group.f5.id ]
+    tags = {
+    Name = "OB1-NAP"
+  }
 }
