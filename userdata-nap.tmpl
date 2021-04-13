@@ -1,72 +1,4 @@
 #!/bin/bash
-yum update -y
-yum install unzip -y
-#curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-#unzip awscliv2.zip
-#./aws/install
-mkdir -p /etc/ssl/nginx
-chmod 777 /etc/ssl/nginx
-cd /etc/ssl/nginx/
-
-cat > nginx-repo.crt << EOF
------BEGIN CERTIFICATE-----
-MIIDXDCCAkSgAwIBAgIDAZwiMA0GCSqGSIb3DQEBBQUAMD4xEjAQBgNVBAoMCU5H
-SU5YIEluYzEoMCYGA1UEAwwfbmdpbnggY2xpZW50IGF1dGhlbnRpY2F0aW9uIENB
-MjAeFw0yMDEwMjYxMTI2MzhaFw0yMDExMjUxMTI2MzhaMEcxEjAQBgNVBAoMCU5H
-SU5YIEluYzEcMBoGA1UECwwTQ2xpZW50IGNlcnRpZmljYXRlczETMBEGA1UEAwwK
-VDAwMDEwMjg5NDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAJZOZpJl
-Fnb1YdODMTghESbn/fh6clDVJ1f295I9rj5HrX29g6FuU0sENtB1EVeop9KJeBU5
-YQX8ABl1Xf+FQg1XU4AkDBZUUSGngCXZ2dG9BdsmE8OsGS/eKzGi2LAg/o/yruqC
-cqvrwf6Vf0cvW31dlgF/4rZyMkPORVUT9b2FvJR8tIUwAXaZQzz9fX6OmiM/MPH+
-PLX0ripjo4R8bK0IK25b9QTH4HykZ3n3I5xYfRQ72ZYMQ8dXkTsUFz756zVLHwfC
-k+heXWPkyHVPk5Rjqlb9PclX5ttIjjS19mQJF7ibm+LmYwDQh0C9H6HNs6/RQyOZ
-gm51BbTNHzKKZcUCAwEAAaNaMFgwIAYJYIZIAYb4QgENBBMWEVBhaWQgc3Vic2Ny
-aXB0aW9uMA4GA1UdDwEB/wQEAwIDiDAMBgNVHRMBAf8EAjAAMBYGA1UdJQEB/wQM
-MAoGCCsGAQUFBwMCMA0GCSqGSIb3DQEBBQUAA4IBAQBc93clMdMWLCUoYHuB9Y5b
-o8bp859OcXBansdE5S0WXmC1nrk7OAzEbvTQih/WocFD7OoHvM86iesPnmTIHLis
-iZ1naMkGvYcakJpuGDJ01B/3k3KOhc5DNzo0DL6ezZXfL1W7s5j0meloTHKarDVX
-NZ9YmHeqXXlEtkvRS4bTyBreaJwQm7a0lJ3KzL9UypUM89ioGQxQu4b7m48BwBs4
-Wp7Dfk37S/Fp37KtV3HZNC8ysK78SwJAs1+jT8PIe/YqfVR8qIXCSnbhXYw5/jWE
-Qya5z54QJPOOgSkfujvjSyVlMuY1uBf86w8elzvVHhu6fvE6WqoL8tT0EcS/1auH
------END CERTIFICATE-----
-EOF
-
-cat > nginx-repo.key << EOF
------BEGIN PRIVATE KEY-----
-MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCWTmaSZRZ29WHT
-gzE4IREm5/34enJQ1SdX9veSPa4+R619vYOhblNLBDbQdRFXqKfSiXgVOWEF/AAZ
-dV3/hUINV1OAJAwWVFEhp4Al2dnRvQXbJhPDrBkv3isxotiwIP6P8q7qgnKr68H+
-lX9HL1t9XZYBf+K2cjJDzkVVE/W9hbyUfLSFMAF2mUM8/X1+jpojPzDx/jy19K4q
-Y6OEfGytCCtuW/UEx+B8pGd59yOcWH0UO9mWDEPHV5E7FBc++es1Sx8HwpPoXl1j
-5Mh1T5OUY6pW/T3JV+bbSI40tfZkCRe4m5vi5mMA0IdAvR+hzbOv0UMjmYJudQW0
-zR8yimXFAgMBAAECggEAIWIwbft9zdYacDwHRowxnw6P3gx0L3foUSVNP3HrrXGG
-GxNolQZIAbVh51LZEzsmayCVR0GDRyz9aKokwof6b7Qhm6hl9t+rVWo6kC2er3Lo
-RhBi+2bSAUu7FD8zGYt6fsZMC1IF3iFy6PSTXGAsVd/fXV3mINekSmMaCxdv0TP3
-1zfrDs2h0SsqlL3Nm8sYGaAJPB2onmR20H/ZU/PriOyF2ltt8QDMxyjtuIDTx8xn
-LL1MgDDaDw5PpAqh+xtO+xVDjcmLuHcMNqIs7GM/r2sJPHdpYn9ydTvDww1gJXgT
-a6e6Gv0mZJ+htEQCz9Ud2ZuvJ0PWIN1dqVavLWfhAQKBgQDFUQB5BMuevjY4ZKP7
-xJ5OBnxNrPlrsYfZbDSEL66tnMLd3Ch4zZ8D9vmEZ4IZFlUjCN9ET0L3TznXObki
-rW4pKMSGcPbYkAI2nH1mjUK/srof/DReHTak/zocJO5EjWnN1CZHtaES9J6mkV9X
-JGo8aU9bidQau3vIjt8VjvvosQKBgQDDAjSlwEHDVJ1dt8VzfN0GCDeL5LsB6LBG
-RO0IVKQb1sto4t5tk0TCNlqsdMKhjUF86toiXtJnjiD8TZLY5ArpiwJLJsfoDT+3
-8x5wNmp1/TDzZPlPxm0BnnZDXucVnRKlNcv3wsaE/T7H7Iowielzf76aPDmG2fSx
-LStxePETVQKBgDDgcceIgo/d+jxZ4az59WTKgnwTPu2IWmhnP1MHJLPowvSGFphm
-Bt/Ki+Baa4WfXJODHRskryfnviIsMEoAv+r+KEBNNzhJ4+J3PTDsCP7HXQeTR72Q
-avrQJirWkxb0GKNdy+WzfiTd53bHR+CkKpSwWXIJYDsG+hCiI2yJsKjhAoGAFgcq
-wUptY04slIiMwlXpdaP5+lB1G2sYdmeUyuscupRR1+BAten7y2Bub6qkzbDyI9U3
-nMhPRilU6ossullQLj9om+qejETq3LGWz6Al+HwISoYub2d/qr4mp8eRnOxoTcc8
-6hjTafRdYiIDHiaF+2kDs9J3wRbfwB/VF3VM7h0CgYEArUrIVTb7h+KGP+q5BbQV
-k0K/xUm2MUBAYeIdoQzf4xZrwErJsfmzEDxO/q1zqV648lDGq6Vs6s86yAC7GVIs
-c8QJBfn3XilwKStAyJLz3ohUEE7sf/7JyCONEub1pzxjCRxaTKRggJ1e3xwzkQS6
-K9CqpUJhv81fGJAkjtA+g5I=
------END PRIVATE KEY-----
-EOF
-
-yum install -y ca-certificates epel-release wget
-wget -P /etc/yum.repos.d https://cs.nginx.com/static/files/nginx-plus-7.repo
-wget -P /etc/yum.repos.d https://cs.nginx.com/static/files/app-protect-signatures-7.repo
-yum install -y app-protect
-yum install -y app-protect-attack-signatures
  
 cd /etc/nginx/
 mv nginx.conf nginx.conf.old
@@ -97,9 +29,7 @@ http {
       proxy_http_version 1.1;
  
       app_protect_enable on;
-app_protect_policy_file "/etc/nginx/NginxDefaultPolicy.json";
-      #app_protect_security_log_enable on;
-      #app_protect_security_log "/etc/nginx/log-default.json" syslog:server=172.31.35.152:80;
+      app_protect_policy_file "/etc/nginx/NginxDefaultPolicy.json";
  
       location / {
             client_max_body_size 0;
@@ -124,4 +54,5 @@ EOF
  
 setenforce 0
  
-systemctl start nginx
+sudo su
+service nginx restart

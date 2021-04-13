@@ -33,21 +33,21 @@ resource "aws_security_group" "f5" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["176.252.120.249/32"]
+    cidr_blocks = ["176.25.98.118/32"]
   }
 
     ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["176.252.120.249/32"]
+    cidr_blocks = ["176.25.98.118/32"]
   }
 
     ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["176.252.120.249/32"]
+    cidr_blocks = ["176.25.98.118/32"]
   }
 
   ingress {
@@ -92,8 +92,8 @@ data "template_file" "user_data2" {
 }
 
 resource "aws_instance" "OB1-NAP" {
-  ami = "ami-09e5afc68eed60ef4"
-  instance_type = "t2.medium"
+  ami = "ami-067ec6724e2ff931d"
+  instance_type = "t3.small"
   subnet_id   = module.vpc.public_subnets[0]
   private_ip = "10.0.1.11"
   key_name   = "${var.ssh_key_name}"
