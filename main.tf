@@ -103,3 +103,11 @@ resource "aws_instance" "OB1-NAP" {
     Name = "OB1-NAP"
   }
 }
+
+output "NAP_pub_ip" {
+  value = "http://${aws_instance.OB1-NAP.public_ip}"
+}
+
+output "JuiceShop_pub_ip" {
+  value = "http://${aws_instance.OB1-JuiceShop.public_ip}"
+}
