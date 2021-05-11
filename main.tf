@@ -24,7 +24,7 @@ module "vpc" {
   }
 }
 
-#Configure the security Group
+#Configure the security Group for management and application access
 resource "aws_security_group" "f5" {
   name   = "${var.prefix}-f5"
   vpc_id = module.vpc.vpc_id
@@ -68,11 +68,13 @@ resource "aws_security_group" "f5" {
   }
 }
 
+#Reference the template file that will be used to configure the Juice Shop application
 data "template_file" "user_data1" {
   template = "${file("${path.module}/userdata.tmpl")}"
 
 }
 
+#Build the Juice shop EC2 instance and install the Juice shop application
 resource "aws_instance" "OB1-JuiceShop" {
   ami = "ami-0765d48d7e15beb93"
   instance_type = "t2.micro"
@@ -86,11 +88,13 @@ resource "aws_instance" "OB1-JuiceShop" {
   }
 }
 
+#Reference the template file that will be used to configure the JNGINX APP Protect
 data "template_file" "user_data2" {
   template = "${file("${path.module}/userdata-nap.tmpl")}"
 
 }
 
+#Build the NGINX APP Protect EC2 instance and configure NAP
 resource "aws_instance" "OB1-NAP" {
   ami = "ami-067ec6724e2ff931d"
   instance_type = "t3.small"
@@ -104,6 +108,7 @@ resource "aws_instance" "OB1-NAP" {
   }
 }
 
+#Output the direct route to Juice Shop & NAP protected route to Juice Shop
 output "NAP_pub_ip" {
   value = "http://${aws_instance.OB1-NAP.public_ip}"
 }

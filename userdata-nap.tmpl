@@ -1,10 +1,12 @@
 #!/bin/bash
- 
+
+#Backup the NGINX configuration file 
 cd /etc/nginx/
 mv nginx.conf nginx.conf.old
  
 chmod 777 /etc/nginx/
 
+#Install default NAP policy and proxy pass the traffic to the private address of the Juice Shop application
 cat > nginx.conf << EOF
 user nginx;
  
@@ -29,7 +31,7 @@ http {
       proxy_http_version 1.1;
  
       app_protect_enable on;
-      app_protect_policy_file "/etc/nginx/NginxDefaultPolicy.json";
+      #app_protect_policy_file "/etc/nginx/NginxDefaultPolicy.json";
  
       location / {
             client_max_body_size 0;
@@ -40,6 +42,7 @@ http {
 }
 EOF
 
+#Set up logging
 cat > log-default.json << EOF
 "filter": {
    "request_type": "all"
@@ -54,5 +57,6 @@ EOF
  
 setenforce 0
  
+#Restart NGINX 
 sudo su
 service nginx restart
